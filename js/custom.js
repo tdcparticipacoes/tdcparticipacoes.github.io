@@ -47,7 +47,7 @@ var form = document.getElementById("form-newsletter");
 async function handleSubmit(event) {
   event.preventDefault();
 
-//   var status = document.getElementById("my-form-status");
+  var status = document.getElementById("form-newsletter-status");
   var data = new FormData(event.target);
 
   fetch(event.target.action, {
@@ -59,23 +59,26 @@ async function handleSubmit(event) {
   })
     .then((response) => {
       if (response.ok) {
-        // status.innerHTML = "Thanks for your submission!";
+        status.innerHTML =
+          "Que bom que você se inscreveu, logo enviaremos novidades!";
         form.reset();
       } else {
         response.json().then((data) => {
           if (Object.hasOwn(data, "errors")) {
-            // status.innerHTML = data["errors"]
-            //   .map((error) => error["message"])
-            //   .join(", ");
+            status.innerHTML = data["errors"]
+              .map((error) => error["message"])
+              .join(", ");
           } else {
-            // status.innerHTML = "Oops! There was a problem submitting your form";
+            status.innerHTML = "Oops! Houve um problema no cadastro.";
           }
         });
       }
     })
     .catch((error) => {
-    //   status.innerHTML = "Oops! There was a problem submitting your form";
+      status.innerHTML = "Oops! Houve um problema no cadastro.";
     });
+
+    $('#modal-newsletter').modal('show');
 }
 
 form.addEventListener("submit", handleSubmit);
